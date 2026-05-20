@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.splitjoin">
+        <handler implementation="com.splitjoin.json.JsonObjectHandler"/>
+    </extensions>
+</idea-plugin>

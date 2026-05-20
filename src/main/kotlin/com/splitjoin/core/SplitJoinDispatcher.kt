@@ -35,9 +35,11 @@ object SplitJoinDispatcher {
             }
             val range = context.affectedRange() ?: return@Runnable
             PsiDocumentManager.getInstance(project).commitDocument(document)
-            CodeStyleManager.getInstance(project).reformatRange(
-                psiFile, range.startOffset, range.endOffset
-            )
+            if (direction == Direction.SPLIT) {
+                CodeStyleManager.getInstance(project).reformatRange(
+                    psiFile, range.startOffset, range.endOffset
+                )
+            }
         })
     }
 
