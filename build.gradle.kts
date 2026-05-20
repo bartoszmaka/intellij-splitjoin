@@ -16,7 +16,6 @@ repositories {
 dependencies {
     intellijPlatform {
         rubymine("2024.2.4")
-        bundledPlugin("com.intellij.modules.json")
         instrumentationTools()
         testFramework(TestFrameworkType.Platform)
     }
