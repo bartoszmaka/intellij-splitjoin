@@ -9,6 +9,7 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends optional="true" config-file="splitjoin-json.xml">com.intellij.modules.json</depends>
+    <depends optional="true" config-file="splitjoin-ruby.xml">com.intellij.modules.ruby</depends>
 
     <extensionPoints>
         <extensionPoint name="handler"
