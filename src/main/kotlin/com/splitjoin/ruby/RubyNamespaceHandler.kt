@@ -1,6 +1,5 @@
 package com.splitjoin.ruby
 
-import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.util.PsiTreeUtil
@@ -32,14 +31,11 @@ class RubyNamespaceHandler : SplitJoinHandler {
     override fun canJoin(element: PsiElement): Boolean {
         if (element !is RClass && element !is RModule) return false
         if (element.containsComment()) return false
+        val ownName = nameTextOf(element)
+        if (ownName != null && ownName.contains("::")) return false
         val chain = collectJoinableChain(element) ?: return false
         if (chain.size < 2) return false
-        // The outermost element of the chain must NOT have a parent class/module.
-        // If it does, joining would produce a compact namespace inside an enclosing structure,
-        // which would be semantically broken (the outer wrappers can't be joined away).
-        val outer = chain.first()
-        val outerParent = PsiTreeUtil.getParentOfType(outer, RClass::class.java, RModule::class.java)
-        return outerParent == null
+        return true
     }
 
     override fun split(element: PsiElement, context: SplitJoinContext) {
@@ -122,7 +118,6 @@ class RubyNamespaceHandler : SplitJoinHandler {
 
     /** Returns the textual name of the RClass or RModule's RName child, e.g. "Foo", "Foo::Bar::Baz". */
     private fun nameTextOf(element: PsiElement): String? {
-        if (element !is RClass && element !is RModule) return null
         val nameNode = PsiTreeUtil.findChildOfType(element, RName::class.java) ?: return null
         return nameNode.text?.trim()
     }
@@ -153,8 +148,9 @@ class RubyNamespaceHandler : SplitJoinHandler {
         if (raw.isBlank()) return ""
         val lines = raw.lines()
         if (lines.size == 1) return lines[0].trim()
-        // Compute the minimum indentation of non-blank lines starting from line index 1
-        // (line 0 has no leading spaces in PSI text)
+        // PSI text of RCompoundStatement starts at the first child's text offset, so line 0 may or
+        // may not have leading spaces depending on document indentation. We trim it unconditionally.
+        // Lines 1+ retain their absolute document indentation; we strip the common indent from those.
         val bodyIndent = lines.drop(1)
             .filter { it.isNotBlank() }
             .minOfOrNull { it.length - it.trimStart().length } ?: 0
@@ -203,12 +199,13 @@ class RubyNamespaceHandler : SplitJoinHandler {
                 // This RClass has a superclass — it must be the innermost; chain ends here.
                 break
             }
-            if (node.containsComment()) break
             val body = bodyCompoundOf(node) ?: break
-            val children = body.children.filter { it !is PsiWhiteSpace && it !is PsiComment }
+            val children = body.children.filter { it !is PsiWhiteSpace }
             if (children.size != 1) break
             val onlyChild = children.first()
             if (onlyChild !is RClass && onlyChild !is RModule) break
+            val childName = nameTextOf(onlyChild)
+            if (childName != null && childName.contains("::")) return null
             node = onlyChild
         }
         return chain
@@ -223,7 +220,7 @@ class RubyNamespaceHandler : SplitJoinHandler {
         if (wrapper is RClass && superclassTextOf(wrapper) != null) return false
         if (wrapper.containsComment()) return false
         val body = bodyCompoundOf(wrapper) ?: return false
-        val children = body.children.filter { it !is PsiWhiteSpace && it !is PsiComment }
+        val children = body.children.filter { it !is PsiWhiteSpace }
         if (children.size != 1) return false
         return children.first() == child
     }

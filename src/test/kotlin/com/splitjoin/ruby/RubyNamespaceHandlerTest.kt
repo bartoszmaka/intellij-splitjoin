@@ -166,7 +166,7 @@ class RubyNamespaceHandlerTest : BasePlatformTestCase() {
         )
     }
 
-    fun `test join bails when wrapper has sibling content`() {
+    fun `test join sub-chain when outer wrapper has sibling content`() {
         myFixture.configureByText(
             "a.rb",
             """
@@ -179,12 +179,13 @@ class RubyNamespaceHandlerTest : BasePlatformTestCase() {
             end
             """.trimIndent()
         )
-        val before = myFixture.editor.document.text
         myFixture.performEditorAction("Splitjoin.Join")
-        assertEquals(before, myFixture.editor.document.text)
+        myFixture.checkResult(
+            "module Foo\n  class Bar::Baz\nend\n  CONST = 1\nend"
+        )
     }
 
-    fun `test join bails when wrapper module has sibling include`() {
+    fun `test join sub-chain when outer wrapper has sibling include`() {
         myFixture.configureByText(
             "a.rb",
             """
@@ -197,12 +198,13 @@ class RubyNamespaceHandlerTest : BasePlatformTestCase() {
             end
             """.trimIndent()
         )
-        val before = myFixture.editor.document.text
         myFixture.performEditorAction("Splitjoin.Join")
-        assertEquals(before, myFixture.editor.document.text)
+        myFixture.checkResult(
+            "module Foo\n  include Mixin\n  class Bar::Baz\nend\nend"
+        )
     }
 
-    fun `test join bails when comment exists in chain`() {
+    fun `test join sub-chain when ancestor wrapper has comment`() {
         myFixture.configureByText(
             "a.rb",
             """
@@ -215,9 +217,10 @@ class RubyNamespaceHandlerTest : BasePlatformTestCase() {
             end
             """.trimIndent()
         )
-        val before = myFixture.editor.document.text
         myFixture.performEditorAction("Splitjoin.Join")
-        assertEquals(before, myFixture.editor.document.text)
+        myFixture.checkResult(
+            "module Foo\n  # outer comment\n  class Bar::Baz\nend\nend"
+        )
     }
 
     fun `test single-level class with no nesting is a no-op`() {
@@ -256,5 +259,68 @@ class RubyNamespaceHandlerTest : BasePlatformTestCase() {
             end
             """.trimIndent()
         )
+    }
+
+    fun `test join compact chain nested inside outer with sibling content`() {
+        myFixture.configureByText(
+            "a.rb",
+            """
+            module TopLevel
+              CONST = 1
+              module Outer
+                module Inner
+                  class L<caret>eaf
+                  end
+                end
+              end
+            end
+            """.trimIndent()
+        )
+        myFixture.performEditorAction("Splitjoin.Join")
+        myFixture.checkResult(
+            "module TopLevel\n  CONST = 1\n  class Outer::Inner::Leaf\nend\nend"
+        )
+    }
+
+    fun `test caret inside innermost body still reaches handler`() {
+        myFixture.configureByText(
+            "a.rb",
+            """
+            module Foo
+              module Bar
+                class Baz
+                  def hello
+                    "hi<caret>"
+                  end
+                end
+              end
+            end
+            """.trimIndent()
+        )
+        myFixture.performEditorAction("Splitjoin.Join")
+        myFixture.checkResult(
+            """
+            class Foo::Bar::Baz
+              def hello
+                "hi"
+              end
+            end
+            """.trimIndent()
+        )
+    }
+
+    fun `test join bails when intermediate element has compact name`() {
+        myFixture.configureByText(
+            "a.rb",
+            """
+            module Foo
+              module Bar::B<caret>az
+              end
+            end
+            """.trimIndent()
+        )
+        val before = myFixture.editor.document.text
+        myFixture.performEditorAction("Splitjoin.Join")
+        assertEquals(before, myFixture.editor.document.text)
     }
 }
