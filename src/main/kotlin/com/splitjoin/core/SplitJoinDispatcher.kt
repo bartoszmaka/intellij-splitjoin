@@ -36,9 +36,7 @@ object SplitJoinDispatcher {
             val range = context.affectedRange() ?: return@Runnable
             PsiDocumentManager.getInstance(project).commitDocument(document)
             if (direction == Direction.SPLIT) {
-                CodeStyleManager.getInstance(project).reformatRange(
-                    psiFile, range.startOffset, range.endOffset
-                )
+                indentEachLine(project, psiFile, document, range)
             }
         })
     }
@@ -66,6 +64,21 @@ object SplitJoinDispatcher {
             node = node.parent
         }
         return null
+    }
+
+    private fun indentEachLine(
+        project: Project,
+        psiFile: PsiFile,
+        document: com.intellij.openapi.editor.Document,
+        range: com.intellij.openapi.util.TextRange,
+    ) {
+        val codeStyle = CodeStyleManager.getInstance(project)
+        val firstLine = document.getLineNumber(range.startOffset)
+        val lastLine = document.getLineNumber(range.endOffset)
+        for (line in firstLine..lastLine) {
+            val lineStart = document.getLineStartOffset(line)
+            codeStyle.adjustLineIndent(psiFile, lineStart)
+        }
     }
 
     private fun showNoOp(project: Project, direction: Direction) {
