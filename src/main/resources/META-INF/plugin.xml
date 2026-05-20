@@ -14,4 +14,19 @@
                         interface="com.splitjoin.core.SplitJoinHandler"
                         dynamic="true"/>
     </extensionPoints>
+
+    <actions>
+        <action id="Splitjoin.Split"
+                class="com.splitjoin.core.SplitAction"
+                text="Split Construct"
+                description="Convert single-line to multi-line">
+            <add-to-group group-id="CodeMenu" anchor="last"/>
+        </action>
+        <action id="Splitjoin.Join"
+                class="com.splitjoin.core.JoinAction"
+                text="Join Construct"
+                description="Convert multi-line to single-line">
+            <add-to-group group-id="CodeMenu" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>
