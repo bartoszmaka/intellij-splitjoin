@@ -3,5 +3,6 @@
         <handler implementation="com.splitjoin.ruby.RubyHashHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyArrayHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyMethodCallArgsHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyMethodDefParamsHandler"/>
     </extensions>
 </idea-plugin>
