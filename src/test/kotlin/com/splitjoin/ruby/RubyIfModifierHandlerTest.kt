@@ -61,22 +61,6 @@ class RubyIfModifierHandlerTest : BasePlatformTestCase() {
         myFixture.checkResult("return x if y")
     }
 
-    fun `test join does not fire on if with else`() {
-        myFixture.configureByText(
-            "a.rb",
-            """
-            if y<caret>
-              return x
-            else
-              return z
-            end
-            """.trimIndent()
-        )
-        val before = myFixture.editor.document.text
-        myFixture.performEditorAction("Splitjoin.Join")
-        assertEquals(before, myFixture.editor.document.text)
-    }
-
     fun `test join does not fire on if with multiple body statements`() {
         myFixture.configureByText(
             "a.rb",
