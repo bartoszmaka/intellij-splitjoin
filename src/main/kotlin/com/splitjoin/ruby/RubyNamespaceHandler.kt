@@ -35,7 +35,13 @@ class RubyNamespaceHandler : SplitJoinHandler {
         if (ownName != null && ownName.contains("::")) return false
         val chain = collectJoinableChain(element) ?: return false
         if (chain.size < 2) return false
-        return true
+        val outer = chain.first()
+        // Guard: refuse to join a sub-chain nested inside another class/module wrapper.
+        // The join path does not re-indent the replacement, so the closing `end` would
+        // land at column 0 and produce malformed Ruby when the wrapper is indented.
+        // Keep joins limited to top-level chains where column 0 is the correct indent.
+        val outerParent = PsiTreeUtil.getParentOfType(outer, RClass::class.java, RModule::class.java)
+        return outerParent == null
     }
 
     override fun split(element: PsiElement, context: SplitJoinContext) {
