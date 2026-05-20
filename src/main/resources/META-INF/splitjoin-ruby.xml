@@ -1,5 +1,6 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.splitjoin">
         <handler implementation="com.splitjoin.ruby.RubyHashHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyArrayHandler"/>
     </extensions>
 </idea-plugin>
