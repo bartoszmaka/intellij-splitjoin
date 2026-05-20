@@ -8,4 +8,10 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+
+    <extensionPoints>
+        <extensionPoint name="handler"
+                        interface="com.splitjoin.core.SplitJoinHandler"
+                        dynamic="true"/>
+    </extensionPoints>
 </idea-plugin>
