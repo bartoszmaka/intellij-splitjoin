@@ -5,5 +5,6 @@
         <handler implementation="com.splitjoin.ruby.RubyMethodCallArgsHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyMethodDefParamsHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyBlockHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyIfModifierHandler"/>
     </extensions>
 </idea-plugin>
