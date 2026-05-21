@@ -100,4 +100,32 @@ class JsxAttributeHandlerTest : BasePlatformTestCase() {
 />;"""
         assertEquals(expected, myFixture.editor.document.text)
     }
+
+    fun `test JSX with block comment between attributes bails`() {
+        // The IDE parses `/* */` between attributes as a PsiComment child of the JSX element.
+        // The handler must bail so the comment isn't dropped during a split.
+        myFixture.configureByText(
+            "a.jsx",
+            """const e = <div className<caret>="x" /*c*/ id="y">hi</div>;"""
+        )
+        val before = myFixture.editor.document.text
+        myFixture.performEditorAction("Splitjoin.Split")
+        assertEquals(before, myFixture.editor.document.text)
+    }
+
+    fun `test JSX with child expression comment splits normally`() {
+        // Comments inside element children (e.g., `{/* */}` in a JSX child) don't intersect the
+        // opening-tag region the handler rewrites, so a split is allowed and the comment is
+        // preserved verbatim.
+        myFixture.configureByText(
+            "a.jsx",
+            """const e = <div className<caret>="x" id="y">{/* hello */}</div>;"""
+        )
+        myFixture.performEditorAction("Splitjoin.Split")
+        val expected = """const e = <div
+    className="x"
+    id="y"
+>{/* hello */}</div>;"""
+        assertEquals(expected, myFixture.editor.document.text)
+    }
 }

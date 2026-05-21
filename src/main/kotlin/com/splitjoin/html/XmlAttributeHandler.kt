@@ -1,10 +1,11 @@
 package com.splitjoin.html
 
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
-import com.intellij.psi.xml.XmlComment
 import com.intellij.psi.xml.XmlTag
 import com.intellij.psi.xml.XmlToken
 import com.intellij.psi.xml.XmlTokenType
@@ -106,15 +107,17 @@ class XmlAttributeHandler : SplitJoinHandler {
     }
 
     private fun startTagContainsComment(tag: XmlTag, range: TextRange): Boolean {
-        // Look for any XmlComment / processing-instruction / CDATA whose range falls inside the
-        // start-tag range. For the v1 spec we treat XmlComment as the universal trigger; the
-        // others are rare enough that we either don't see them or they show up as XmlComment.
+        // PsiComment covers XmlComment for HTML/XML AND PsiCommentImpl for JSX's JS-style
+        // `/* */` / `//` comments (since JSXmlLiteralExpression is-a XmlTag and reaches this
+        // handler as a fallback when JsxAttributeHandler is absent or bails).
+        for (comment in PsiTreeUtil.findChildrenOfType(tag, PsiComment::class.java)) {
+            if (range.contains(comment.textRange)) return true
+        }
+        // Text scan for `<!--` between attributes (some parser modes split a comment across
+        // token boundaries instead of producing an XmlComment node).
         for (child in tag.children) {
-            if (child is XmlComment && range.contains(child.textRange)) return true
-            // Also bail on whitespace-only children that contain a `<!--` literal as a defensive
-            // measure (some parser modes split comments across token boundaries):
             if (child is PsiWhiteSpace) continue
-            if (child.text.contains("<!--") && range.contains(child.textRange)) return true
+            if (range.contains(child.textRange) && child.text.contains("<!--")) return true
         }
         return false
     }
