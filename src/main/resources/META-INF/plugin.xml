@@ -5,6 +5,21 @@
     <description><![CDATA[
         Splitjoin for JetBrains IDEs. Converts the construct under the caret between
         single-line and multi-line forms. Inspired by vim-splitjoin.
+
+        <h3>Keybindings</h3>
+
+        <p>
+            <b>IdeaVim</b> — add to your <code>.ideavimrc</code>:
+        </p>
+        <pre>
+nnoremap &lt;C-m&gt;&lt;C-s&gt; :action Splitjoin.Split&lt;CR&gt;
+nnoremap &lt;C-m&gt;&lt;C-d&gt; :action Splitjoin.Join&lt;CR&gt;
+        </pre>
+
+        <p>
+            <b>Regular keymap</b> — assign shortcuts via
+            <i>Settings &gt; Keymap &gt; Plugins &gt; SplitJoin</i>.
+        </p>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
