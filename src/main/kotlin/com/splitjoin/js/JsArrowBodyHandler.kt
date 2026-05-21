@@ -31,6 +31,7 @@ class JsArrowBodyHandler : SplitJoinHandler {
     override fun split(element: PsiElement, context: SplitJoinContext) {
         val arrow = element as JSFunctionExpression
         val body = expressionBodyOf(arrow) ?: return
+        if (body is JSBlockStatement) return
         val replacement = "{\nreturn ${body.text};\n}"
         context.replace(body, replacement)
     }
@@ -43,6 +44,9 @@ class JsArrowBodyHandler : SplitJoinHandler {
         context.replace(block, expr.text)
     }
 
+    // Returns the arrow's body: a JSBlockStatement when the arrow has a block body, otherwise
+    // the trailing JSExpression that forms the expression body. Callers must check the type
+    // before treating the result as one or the other.
     private fun expressionBodyOf(arrow: JSFunctionExpression): PsiElement? {
         if (arrow.block != null) return arrow.block
         return arrow.children.filterIsInstance<JSExpression>().lastOrNull()
