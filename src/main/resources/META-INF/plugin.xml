@@ -11,6 +11,7 @@
     <depends optional="true" config-file="splitjoin-json.xml">com.intellij.modules.json</depends>
     <depends optional="true" config-file="splitjoin-ruby.xml">com.intellij.modules.ruby</depends>
     <depends optional="true" config-file="splitjoin-js.xml">JavaScript</depends>
+    <depends optional="true" config-file="splitjoin-html.xml">com.intellij.modules.xml</depends>
 
     <extensionPoints>
         <extensionPoint name="handler"
