@@ -1,0 +1,8 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.splitjoin">
+        <handler implementation="com.splitjoin.js.JsObjectHandler"/>
+        <handler implementation="com.splitjoin.js.JsArrayHandler"/>
+        <handler implementation="com.splitjoin.js.JsCallArgsHandler"/>
+        <handler implementation="com.splitjoin.js.JsArrowBodyHandler"/>
+    </extensions>
+</idea-plugin>

@@ -17,9 +17,11 @@ dependencies {
     intellijPlatform {
         rubymine("2024.2.4")
         bundledPlugin("org.jetbrains.plugins.ruby")
+        bundledPlugin("JavaScript")
         instrumentationTools()
         testFramework(TestFrameworkType.Platform)
         testFramework(TestFrameworkType.Plugin.Ruby)
+        testFramework(TestFrameworkType.Plugin.JavaScript)
     }
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.opentest4j:opentest4j:1.3.0")
