@@ -7,5 +7,6 @@
         <handler implementation="com.splitjoin.ruby.RubyBlockHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyIfModifierHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyTernaryHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyNamespaceHandler"/>
     </extensions>
 </idea-plugin>
