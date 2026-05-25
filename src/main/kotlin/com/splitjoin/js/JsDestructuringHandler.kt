@@ -20,8 +20,12 @@ class JsDestructuringHandler : SplitJoinHandler {
         val pattern = element.destructuringAncestor() ?: return false
         val varStmt = pattern.varStatement() ?: return false
         if (varStmt.containsComment()) return false
-        // Check if there's a single destructuring element (not mixed with other variables)
-        val destElem = varStmt.children.filterIsInstance<JSDestructuringElement>().singleOrNull() ?: return false
+        // Top-level declarators (direct children that are either JSDestructuringElement
+        // or JSVariable) must be exactly one — bail when destructuring is mixed with
+        // plain declarators (e.g. `const { a } = obj, c = 1`).
+        val topLevel = varStmt.children.filter { it is JSDestructuringElement || it is JSVariable }
+        if (topLevel.size != 1) return false
+        if (topLevel[0] !is JSDestructuringElement) return false
         return pattern.canSplitDestructuring()
     }
 

@@ -52,8 +52,6 @@ class JsVariableDeclaratorListHandlerTest : BasePlatformTestCase() {
         val source = """const { a, b<caret> } = obj, c = 1"""
         myFixture.configureByText("a.ts", source)
         myFixture.performEditorAction("Splitjoin.Split")
-        // Destructuring path bails here for J7 (mixed declarator with destructuring).
-        // J3 also bails because it requires single declarator. So overall no-op expected.
         myFixture.checkResult(source)
     }
 

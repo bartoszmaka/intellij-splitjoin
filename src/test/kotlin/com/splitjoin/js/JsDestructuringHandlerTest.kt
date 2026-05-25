@@ -92,23 +92,29 @@ class JsDestructuringHandlerTest : BasePlatformTestCase() {
         myFixture.checkResult(source)
     }
 
-    fun `test no-op join when sources differ`() {
-        val source = """
+    fun `test J3 bails when sources differ - J7 merge fallback`() {
+        // J3 bails (sources don't match), so J7 fires and merges declarators.
+        myFixture.configureByText(
+            "a.ts",
+            """
             const a = obj1.a<caret>;
             const b = obj2.b;
-        """.trimIndent()
-        myFixture.configureByText("a.ts", source)
+            """.trimIndent()
+        )
         myFixture.performEditorAction("Splitjoin.Join")
-        myFixture.checkResult(source)
+        myFixture.checkResult("""const a = obj1.a, b = obj2.b;""")
     }
 
-    fun `test no-op join when array indices skip`() {
-        val source = """
+    fun `test J3 bails when array indices skip - J7 merge fallback`() {
+        // J3 bails (indices not contiguous), so J7 fires and merges declarators.
+        myFixture.configureByText(
+            "a.ts",
+            """
             const a = arr[0]<caret>;
             const b = arr[2];
-        """.trimIndent()
-        myFixture.configureByText("a.ts", source)
+            """.trimIndent()
+        )
         myFixture.performEditorAction("Splitjoin.Join")
-        myFixture.checkResult(source)
+        myFixture.checkResult("""const a = arr[0], b = arr[2];""")
     }
 }

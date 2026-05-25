@@ -13,12 +13,10 @@ class JsObjectShorthandHandler : SplitJoinHandler {
 
     private enum class Form { SHORTHAND, KEY_KEY, INELIGIBLE }
 
-    override fun canSplit(element: PsiElement): Boolean {
-        val obj = element.objectLiteralAncestor() ?: return false
-        if (obj.containsComment()) return false
-        val eligible = obj.eligibilityProfile()
-        return eligible.shorthand.isNotEmpty() && eligible.keyKey.isEmpty()
-    }
+    // J4 is join-only by design: the shorthand <-> explicit toggle would conflict with
+    // JsObjectHandler's single-line-to-multi-line Split semantics. Users wanting to
+    // expand shorthand should manually rewrite or use a separate refactor.
+    override fun canSplit(element: PsiElement): Boolean = false
 
     override fun canJoin(element: PsiElement): Boolean {
         val obj = element.objectLiteralAncestor() ?: return false
