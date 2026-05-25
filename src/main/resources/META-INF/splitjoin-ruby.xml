@@ -10,5 +10,6 @@
         <handler implementation="com.splitjoin.ruby.RubyTernaryHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyNamespaceHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyCaseWhenHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyRescueModifierHandler"/>
     </extensions>
 </idea-plugin>
