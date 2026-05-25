@@ -1,6 +1,10 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.splitjoin">
         <handler implementation="com.splitjoin.js.JsImportListHandler"/>
+        <handler implementation="com.splitjoin.js.TsUnionTypeHandler"/>
+        <handler implementation="com.splitjoin.js.TsGenericParamsHandler"/>
+        <handler implementation="com.splitjoin.js.TsTypeLiteralHandler"/>
+        <handler implementation="com.splitjoin.js.TsTupleTypeHandler"/>
         <handler implementation="com.splitjoin.js.JsDestructuringHandler"/>
         <handler implementation="com.splitjoin.js.JsVariableDeclaratorListHandler"/>
         <handler implementation="com.splitjoin.js.JsObjectHandler"/>
