@@ -17,5 +17,6 @@
         <handler implementation="com.splitjoin.js.JsArrowBodyHandler"/>
         <handler implementation="com.splitjoin.js.JsxSelfCloseToggleHandler"/>
         <handler implementation="com.splitjoin.js.JsxAttributeHandler"/>
+        <handler implementation="com.splitjoin.js.JsxChildrenHandler"/>
     </extensions>
 </idea-plugin>
