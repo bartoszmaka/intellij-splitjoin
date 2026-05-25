@@ -5,6 +5,9 @@
         <handler implementation="com.splitjoin.js.TsGenericParamsHandler"/>
         <handler implementation="com.splitjoin.js.TsTypeLiteralHandler"/>
         <handler implementation="com.splitjoin.js.TsTupleTypeHandler"/>
+        <handler implementation="com.splitjoin.js.JsTernaryHandler"/>
+        <handler implementation="com.splitjoin.js.JsTemplateLiteralHandler"/>
+        <handler implementation="com.splitjoin.js.JsFunctionFormHandler"/>
         <handler implementation="com.splitjoin.js.JsDestructuringHandler"/>
         <handler implementation="com.splitjoin.js.JsVariableDeclaratorListHandler"/>
         <handler implementation="com.splitjoin.js.JsObjectHandler"/>
