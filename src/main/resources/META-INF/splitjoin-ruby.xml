@@ -1,6 +1,7 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.splitjoin">
         <handler implementation="com.splitjoin.ruby.RubyAttrAccessorHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyBlockPassHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyLambdaFormHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyHashHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyArrayHandler"/>
