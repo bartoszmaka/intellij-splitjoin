@@ -8,5 +8,6 @@
         <handler implementation="com.splitjoin.ruby.RubyIfModifierHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyTernaryHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyNamespaceHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyCaseWhenHandler"/>
     </extensions>
 </idea-plugin>
