@@ -4,6 +4,7 @@
         <handler implementation="com.splitjoin.ruby.RubyBlockPassHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyLambdaFormHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyStringInterpolationHandler"/>
+        <handler implementation="com.splitjoin.ruby.RubyMethodChainHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyHashHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyArrayHandler"/>
         <handler implementation="com.splitjoin.ruby.RubyMethodCallArgsHandler"/>
