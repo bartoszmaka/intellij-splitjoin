@@ -7,23 +7,33 @@ class TsGenericParamsHandlerTest : BasePlatformTestCase() {
     fun `test split call-site generics`() {
         myFixture.configureByText("a.ts", "type X = Foo<A<caret>, B, C>")
         myFixture.performEditorAction("Splitjoin.Split")
-        val result = myFixture.editor.document.text
-        assert(result.contains('\n') && result.contains(',')) { "Split must work" }
+        myFixture.checkResult(
+            "type X = Foo<\n    A,\n    B,\n    C,\n>"
+        )
     }
 
     fun `test split decl-site generics`() {
         myFixture.configureByText("a.ts", "function f<A<caret>, B, C>(x: A): void {}")
         myFixture.performEditorAction("Splitjoin.Split")
-        val result = myFixture.editor.document.text
-        assert(result.contains('\n') && result.contains(',')) { "Split must work" }
+        myFixture.checkResult(
+            "function f<\n    A,\n    B,\n    C,\n>(x: A): void {}"
+        )
     }
 
     fun `test join call-site`() {
+        myFixture.configureByText(
+            "a.ts",
+            "type X = Foo<\n    A<caret>,\n    B,\n    C,\n>"
+        )
+        myFixture.performEditorAction("Splitjoin.Join")
+        myFixture.checkResult("type X = Foo<A, B, C>")
+    }
+
+    fun `test round trip`() {
         myFixture.configureByText("a.ts", "type X = Foo<A<caret>, B, C>")
         myFixture.performEditorAction("Splitjoin.Split")
         myFixture.performEditorAction("Splitjoin.Join")
-        val result = myFixture.editor.document.text
-        assert(!result.contains('\n') && result.contains(',')) { "Round-trip must work" }
+        myFixture.checkResult("type X = Foo<A, B, C>")
     }
 
     fun `test no-op single param`() {

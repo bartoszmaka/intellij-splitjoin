@@ -7,35 +7,42 @@ class TsUnionTypeHandlerTest : BasePlatformTestCase() {
     fun `test split union`() {
         myFixture.configureByText("a.ts", "type T = A<caret> | B | C")
         myFixture.performEditorAction("Splitjoin.Split")
-        val result = myFixture.editor.document.text
-        assert(result.contains('\n') && result.contains('|')) { "Split must work" }
+        myFixture.checkResult(
+            "type T =\n    | A\n    | B\n    | C"
+        )
     }
 
     fun `test split intersection`() {
         myFixture.configureByText("a.ts", "type T = A<caret> & B & C")
         myFixture.performEditorAction("Splitjoin.Split")
-        val result = myFixture.editor.document.text
-        assert(result.contains('\n') && result.contains('&')) { "Split must work" }
+        myFixture.checkResult(
+            "type T =\n    & A\n    & B\n    & C"
+        )
     }
 
     fun `test join union`() {
         myFixture.configureByText(
             "a.ts",
-            "type T =\n    | A\n    | B\n    | C"
+            "type T =\n    | A<caret>\n    | B\n    | C"
         )
         myFixture.performEditorAction("Splitjoin.Join")
-        val result = myFixture.editor.document.text
-        assert(result.contains('|') && !result.endsWith('\n')) { "Join must work" }
+        myFixture.checkResult("type T = A | B | C")
     }
 
     fun `test join intersection`() {
         myFixture.configureByText(
             "a.ts",
-            "type T =\n    & A\n    & B\n    & C"
+            "type T =\n    & A<caret>\n    & B\n    & C"
         )
         myFixture.performEditorAction("Splitjoin.Join")
-        val result = myFixture.editor.document.text
-        assert(result.contains('&') && !result.endsWith('\n')) { "Join must work" }
+        myFixture.checkResult("type T = A & B & C")
+    }
+
+    fun `test round trip`() {
+        myFixture.configureByText("a.ts", "type T = A<caret> | B | C")
+        myFixture.performEditorAction("Splitjoin.Split")
+        myFixture.performEditorAction("Splitjoin.Join")
+        myFixture.checkResult("type T = A | B | C")
     }
 
     fun `test no-op on single member union`() {
