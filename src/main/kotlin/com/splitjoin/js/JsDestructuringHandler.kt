@@ -20,7 +20,7 @@ class JsDestructuringHandler : SplitJoinHandler {
         val pattern = element.destructuringAncestor() ?: return false
         val varStmt = pattern.varStatement() ?: return false
         if (varStmt.containsComment()) return false
-        // Check if the destructuring element is a single child (not multiple distinct variables)
+        // Check if there's a single destructuring element (not mixed with other variables)
         val destElem = varStmt.children.filterIsInstance<JSDestructuringElement>().singleOrNull() ?: return false
         return pattern.canSplitDestructuring()
     }
