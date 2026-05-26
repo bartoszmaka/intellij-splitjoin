@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.intellij.platform") version "2.1.0"
 }
 
-group = "com.splitjoin"
+group = "dev.bartoszmaka.splitjoin"
 version = "0.3.5"
 
 repositories {

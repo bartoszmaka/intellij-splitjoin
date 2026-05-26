@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.splitjoin</id>
+    <id>dev.bartoszmaka.splitjoin</id>
     <name>SplitJoin</name>
     <vendor email="bartoszmaka95@gmail.com">bartoszmaka</vendor>
     <description><![CDATA[
