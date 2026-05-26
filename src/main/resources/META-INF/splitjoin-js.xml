@@ -15,6 +15,7 @@
         <handler implementation="com.splitjoin.js.JsArrayHandler"/>
         <handler implementation="com.splitjoin.js.JsCallArgsHandler"/>
         <handler implementation="com.splitjoin.js.JsArrowBodyHandler"/>
+        <handler implementation="com.splitjoin.js.JsxFragmentFormHandler"/>
         <handler implementation="com.splitjoin.js.JsxSelfCloseToggleHandler"/>
         <handler implementation="com.splitjoin.js.JsxAttributeHandler"/>
         <handler implementation="com.splitjoin.js.JsxChildrenHandler"/>

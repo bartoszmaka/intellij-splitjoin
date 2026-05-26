@@ -79,9 +79,10 @@ class JsxAttributeHandlerTest : BasePlatformTestCase() {
     }
 
     fun `test JSX with no attributes is a no-op`() {
+        // Empty body so M11/X2 (children) and M11/X1 (self-close toggle) don't preempt.
         myFixture.configureByText(
             "a.jsx",
-            """const e = <div<caret>>hi</div>;"""
+            """const e = <div<caret>></div>;"""
         )
         val before = myFixture.editor.document.text
         myFixture.performEditorAction("Splitjoin.Split")
