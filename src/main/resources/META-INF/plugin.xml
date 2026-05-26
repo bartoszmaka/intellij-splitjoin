@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.splitjoin</id>
     <name>SplitJoin</name>
-    <vendor>bartoszmaka</vendor>
+    <vendor email="bartoszmaka95@gmail.com">bartoszmaka</vendor>
     <description><![CDATA[
         Splitjoin for JetBrains IDEs. Converts the construct under the caret between
         single-line and multi-line forms. Inspired by vim-splitjoin.
