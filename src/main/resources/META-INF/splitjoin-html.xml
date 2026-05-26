@@ -1,5 +1,6 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.splitjoin">
+        <handler implementation="com.splitjoin.html.XmlClassAttributeHandler"/>
         <handler implementation="com.splitjoin.html.XmlAttributeHandler"/>
         <handler implementation="com.splitjoin.html.XmlChildrenHandler"/>
         <handler implementation="com.splitjoin.html.XmlSelfCloseToggleHandler"/>

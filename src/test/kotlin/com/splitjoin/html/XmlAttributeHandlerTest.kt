@@ -65,7 +65,8 @@ class XmlAttributeHandlerTest : BasePlatformTestCase() {
     }
 
     fun `test tag with no attributes is a no-op`() {
-        myFixture.configureByText("a.html", """<a<caret>>link</a>""")
+        // Empty body so M11/H1 (children) doesn't preempt the assertion.
+        myFixture.configureByText("a.html", """<a<caret>></a>""")
         val before = myFixture.editor.document.text
         myFixture.performEditorAction("Splitjoin.Split")
         assertEquals(before, myFixture.editor.document.text)

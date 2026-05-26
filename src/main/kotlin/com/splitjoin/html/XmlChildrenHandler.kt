@@ -12,19 +12,28 @@ import com.splitjoin.core.containsComment
 class XmlChildrenHandler : SplitJoinHandler {
 
     override fun canSplit(element: PsiElement): Boolean {
+        if (!element.isHtmlOrXmlFile()) return false
         val tag = element.xmlTagAncestor() ?: return false
         if (tag.containsComment()) return false
         if (tag.isSelfClosing()) return false
+        if (tag.attributes.isNotEmpty()) return false
         val children = tag.bodyChildren()
         return tag.isEligible(children) && !tag.text.contains('\n')
     }
 
     override fun canJoin(element: PsiElement): Boolean {
+        if (!element.isHtmlOrXmlFile()) return false
         val tag = element.xmlTagAncestor() ?: return false
         if (tag.containsComment()) return false
         if (tag.isSelfClosing()) return false
+        if (tag.attributes.isNotEmpty()) return false
         val children = tag.bodyChildren()
         return tag.isEligible(children) && tag.text.contains('\n')
+    }
+
+    private fun PsiElement.isHtmlOrXmlFile(): Boolean {
+        val ext = containingFile?.virtualFile?.extension?.lowercase() ?: return false
+        return ext == "html" || ext == "htm" || ext == "xml" || ext == "xhtml"
     }
 
     override fun split(element: PsiElement, context: SplitJoinContext) {

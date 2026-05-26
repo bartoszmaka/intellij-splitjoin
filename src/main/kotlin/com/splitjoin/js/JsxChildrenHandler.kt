@@ -14,7 +14,6 @@ class JsxChildrenHandler : SplitJoinHandler {
         val tag = element.jsxAncestor() ?: return false
         if (tag.containsComment()) return false
         if (tag.isSelfClosing()) return false
-        // Only handle tags with no attributes (JsxAttributeHandler handles those)
         if (tag.hasAttributes()) return false
         val children = tag.bodyChildren()
         return tag.isEligible(children) && !tag.text.contains('\n')
@@ -24,7 +23,6 @@ class JsxChildrenHandler : SplitJoinHandler {
         val tag = element.jsxAncestor() ?: return false
         if (tag.containsComment()) return false
         if (tag.isSelfClosing()) return false
-        // Only handle tags with no attributes (JsxAttributeHandler handles those)
         if (tag.hasAttributes()) return false
         val children = tag.bodyChildren()
         return tag.isEligible(children) && tag.text.contains('\n')
@@ -38,7 +36,6 @@ class JsxChildrenHandler : SplitJoinHandler {
         val rebuilt = if (isElementOnly) {
             "<$tagName>\n" + children.joinToString("\n") { "    ${it.text.trim()}" } + "\n</$tagName>"
         } else {
-            // single text child
             val text = children.first().text.trim()
             "<$tagName>\n    $text\n</$tagName>"
         }
@@ -53,8 +50,6 @@ class JsxChildrenHandler : SplitJoinHandler {
         context.replace(tag, "<$tagName>$joined</$tagName>")
     }
 
-    // ---------- helpers ----------
-
     private fun PsiElement.jsxAncestor(): PsiElement? {
         var node: PsiElement? = this
         while (node != null && node !is PsiFile) {
@@ -65,7 +60,6 @@ class JsxChildrenHandler : SplitJoinHandler {
     }
 
     private fun PsiElement.hasAttributes(): Boolean {
-        // Check if this JSXXmlLiteralExpressionImpl has any XmlAttribute children
         var c = firstChild
         while (c != null) {
             if (c is XmlAttribute) return true
@@ -94,7 +88,6 @@ class JsxChildrenHandler : SplitJoinHandler {
         return false
     }
 
-    /** Returns body-level children (between opening `>` and closing `</`), skipping whitespace-only text. */
     private fun PsiElement.bodyChildren(): List<PsiElement> {
         val result = mutableListOf<PsiElement>()
         var c = firstChild
@@ -118,9 +111,9 @@ class JsxChildrenHandler : SplitJoinHandler {
 
         val hasText = children.any(isTextNode)
         val hasElement = children.any(isElement)
-        if (hasText && hasElement) return false  // mixed bails
+        if (hasText && hasElement) return false
 
-        if (hasText) return children.size == 1   // single text child only
-        return children.all(isElement)           // element-only
+        if (hasText) return children.size == 1
+        return children.all(isElement)
     }
 }

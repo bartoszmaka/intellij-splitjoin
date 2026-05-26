@@ -18,18 +18,27 @@ class XmlSelfCloseToggleHandler : SplitJoinHandler {
     }
 
     override fun canSplit(element: PsiElement): Boolean {
+        if (!element.isHtmlOrXmlFile()) return false
         val tag = element.xmlTagAncestor() ?: return false
         if (tag.containsComment()) return false
         if (!tag.isSelfClosing()) return false
         if (tag.isHtmlVoidElement()) return false
+        if (tag.attributes.isNotEmpty()) return false
         return true
     }
 
     override fun canJoin(element: PsiElement): Boolean {
+        if (!element.isHtmlOrXmlFile()) return false
         val tag = element.xmlTagAncestor() ?: return false
         if (tag.containsComment()) return false
         if (tag.isSelfClosing()) return false
+        if (tag.attributes.isNotEmpty()) return false
         return tag.isBodyEmpty()
+    }
+
+    private fun PsiElement.isHtmlOrXmlFile(): Boolean {
+        val ext = containingFile?.virtualFile?.extension?.lowercase() ?: return false
+        return ext == "html" || ext == "htm" || ext == "xml" || ext == "xhtml"
     }
 
     override fun split(element: PsiElement, context: SplitJoinContext) {
