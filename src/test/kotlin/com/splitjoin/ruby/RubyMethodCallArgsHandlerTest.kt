@@ -9,14 +9,31 @@ class RubyMethodCallArgsHandlerTest : BasePlatformTestCase() {
         myFixture.performEditorAction("Splitjoin.Split")
         myFixture.checkResult(
             """
-            foo(a,
-                b,
-                c,)
+            foo(
+              a,
+              b,
+              c,
+            )
             """.trimIndent()
         )
     }
 
     fun `test join multi-line parenthesized call`() {
+        myFixture.configureByText(
+            "a.rb",
+            """
+            foo(
+              a<caret>,
+              b,
+              c,
+            )
+            """.trimIndent()
+        )
+        myFixture.performEditorAction("Splitjoin.Join")
+        myFixture.checkResult("foo(a, b, c)")
+    }
+
+    fun `test join legacy multi-line parenthesized call`() {
         myFixture.configureByText(
             "a.rb",
             """
@@ -59,8 +76,26 @@ class RubyMethodCallArgsHandlerTest : BasePlatformTestCase() {
         myFixture.performEditorAction("Splitjoin.Split")
         myFixture.checkResult(
             """
-            foo(a: 1,
-                b: 2,)
+            foo(
+              a: 1,
+              b: 2,
+            )
+            """.trimIndent()
+        )
+    }
+
+    fun `test split keyword args on receiver`() {
+        myFixture.configureByText(
+            "a.rb",
+            "profile.update!(do_not_pay<caret>: true, do_not_pay_notes: notes)"
+        )
+        myFixture.performEditorAction("Splitjoin.Split")
+        myFixture.checkResult(
+            """
+            profile.update!(
+              do_not_pay: true,
+              do_not_pay_notes: notes,
+            )
             """.trimIndent()
         )
     }
@@ -86,7 +121,13 @@ class RubyMethodCallArgsHandlerTest : BasePlatformTestCase() {
     fun `test single arg call splits`() {
         myFixture.configureByText("a.rb", "foo(<caret>abc)")
         myFixture.performEditorAction("Splitjoin.Split")
-        myFixture.checkResult("foo(abc,)")
+        myFixture.checkResult(
+            """
+            foo(
+              abc,
+            )
+            """.trimIndent()
+        )
     }
 
     fun `test no-arg call is a no-op`() {

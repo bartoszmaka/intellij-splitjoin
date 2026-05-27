@@ -17,6 +17,8 @@ class SplitJoinContext(
     private var startOffset: Int = Int.MAX_VALUE
     private var endOffset: Int = Int.MIN_VALUE
 
+    var skipAutoIndent: Boolean = false
+
     fun replace(element: PsiElement, text: String): RangeMarker =
         replace(element.textRange, text)
 

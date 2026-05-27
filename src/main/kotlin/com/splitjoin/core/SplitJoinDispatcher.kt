@@ -35,7 +35,7 @@ object SplitJoinDispatcher {
             }
             val range = context.affectedRange() ?: return@Runnable
             PsiDocumentManager.getInstance(project).commitDocument(document)
-            if (direction == Direction.SPLIT) {
+            if (direction == Direction.SPLIT && !context.skipAutoIndent) {
                 indentEachLine(project, psiFile, document, range)
             }
         })
