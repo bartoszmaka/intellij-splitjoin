@@ -17,13 +17,13 @@ as in Community editions for the language subsets they support.
 
 ## Actions
 
-Two actions are registered, both under `Code` → *Split Construct* /
-*Join Construct*:
+Two actions are registered, both under `Code` → *Splitjoin split* /
+*Splitjoin join*:
 
-| Action ID         | What it does                              |
-| ----------------- | ----------------------------------------- |
-| `Splitjoin.Split` | Convert single-line construct to multi-line |
-| `Splitjoin.Join`  | Convert multi-line construct to single-line |
+| Action ID         | Menu label        | What it does                                |
+| ----------------- | ----------------- | ------------------------------------------- |
+| `Splitjoin.Split` | *Splitjoin split* | Convert single-line construct to multi-line |
+| `Splitjoin.Join`  | *Splitjoin join*  | Convert multi-line construct to single-line |
 
 Caret position selects the construct. If no registered handler can act on the
 current caret position, the document is left untouched (every handler is a
@@ -55,7 +55,7 @@ it.)
 
 ### Regular JetBrains keymap
 
-`Settings` → `Keymap` → search for *Split Construct* / *Join Construct* and
+`Settings` → `Keymap` → search for *Splitjoin split* / *Splitjoin join* and
 assign shortcuts. Common choices: `⌥⇧S` / `⌥⇧J` on macOS, `Alt+Shift+S` /
 `Alt+Shift+J` on Linux/Windows.
 

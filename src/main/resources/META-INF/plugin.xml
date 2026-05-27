@@ -29,7 +29,7 @@ nnoremap &lt;C-m&gt;&lt;C-d&gt; :action Splitjoin.Join&lt;CR&gt;
     <depends optional="true" config-file="splitjoin-html.xml">com.intellij.modules.xml</depends>
 
     <extensionPoints>
-        <extensionPoint name="handler"
+        <extensionPoint qualifiedName="com.splitjoin.handler"
                         interface="com.splitjoin.core.SplitJoinHandler"
                         dynamic="true"/>
     </extensionPoints>
@@ -37,13 +37,13 @@ nnoremap &lt;C-m&gt;&lt;C-d&gt; :action Splitjoin.Join&lt;CR&gt;
     <actions>
         <action id="Splitjoin.Split"
                 class="com.splitjoin.core.SplitAction"
-                text="Split Construct"
+                text="Splitjoin split"
                 description="Convert single-line to multi-line">
             <add-to-group group-id="CodeMenu" anchor="last"/>
         </action>
         <action id="Splitjoin.Join"
                 class="com.splitjoin.core.JoinAction"
-                text="Join Construct"
+                text="Splitjoin join"
                 description="Convert multi-line to single-line">
             <add-to-group group-id="CodeMenu" anchor="last"/>
         </action>
